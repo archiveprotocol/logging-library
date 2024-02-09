@@ -1,0 +1,1 @@
+{"version":3,"file":"axios.config.d.ts","sourceRoot":"","sources":["../../src/config/axios.config.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,0BAA0B,EAAE,MAAM,OAAO,CAAC;AAEnD,MAAM,WAAW,eAAgB,SAAQ,0BAA0B;IACjE,QAAQ,EAAE;QACR,SAAS,EAAE,IAAI,CAAC;QAChB,QAAQ,CAAC,EAAE,MAAM,CAAC;QAClB,OAAO,CAAC,EAAE,IAAI,CAAC;KAChB,CAAC;CACH"}
