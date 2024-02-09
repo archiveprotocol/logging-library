@@ -4,7 +4,7 @@ This library is intended to be imported by other libraries which wish to log/str
 
 ## How to use
 
-Add this package as a dependency to `package.json` (using a Gitlab deploy token). See [a relative link](./package.json) for an example.
+Add this package as a dependency to `package.json`
 
 ## Main classes
 
