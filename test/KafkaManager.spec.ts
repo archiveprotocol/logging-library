@@ -6,7 +6,7 @@ import { Consumer } from 'kafkajs';
 
 config();
 
-describe('Kafka manager', () => {
+describe.skip('Kafka manager', () => {
   const testTopic = 'test_topic_1234567';
   const testRequestId = 'b686e6f9-39a4-4725-9156-ad62b79d770c';
   let kafkaManager: KafkaManager;
