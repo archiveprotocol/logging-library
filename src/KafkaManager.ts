@@ -109,7 +109,6 @@ export class KafkaManager {
   async sendRpcResponseTimeToKafka(
     rpcUrl: string,
     requestDuration: number,
-    blueprintId: string,
     requestId?: string,
     responseTimesTopic = Queues.RESPONSE_TIMES,
   ): Promise<void> {
@@ -118,7 +117,7 @@ export class KafkaManager {
 
     const responseTime = {
       url: rpcUrl,
-      blueprintId: blueprintId,
+      blueprintId: 'defaultBlueprintId',
       // TODO  i can only presume indexerId was supposed to be a unique identifier for each AP producer instance
       indexerId: 'INDEXER-ID',
       responseStatusCode: -1,
