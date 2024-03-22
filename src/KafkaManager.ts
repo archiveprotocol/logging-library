@@ -72,10 +72,6 @@ export class KafkaManager {
     externalApiCallsTopic = Queues.EXTERNAL_API_CALLS,
   ): Promise<void> {
     if (!['staging', 'production'].includes(process.env.NODE_ENV)) return;
-    const stringifyQueues = (array: BaseQueue[]) =>
-      array.map((r) => {
-        return { value: JSON.stringify(r) };
-      });
 
     const timestamp = Math.floor(new Date().getTime());
     const requestDuration = config.metadata.duration;
@@ -104,11 +100,45 @@ export class KafkaManager {
       },
     } as ExternalAPICallQueue;
 
-    const responseTimeQueuesAsJson = stringifyQueues([responseTime]);
-    const externalApiCallAsJson = stringifyQueues([externalApiCall]);
+    const responseTimeQueuesAsJson = this.stringifyQueues([responseTime]);
+    const externalApiCallAsJson = this.stringifyQueues([externalApiCall]);
     this.sendMessage(responseTimesTopic, responseTimeQueuesAsJson);
     this.sendMessage(externalApiCallsTopic, externalApiCallAsJson);
   }
+
+  async sendRpcResponseTimeToKafka(
+    rpcUrl: string,
+    requestDuration: number,
+    blueprintId: string,
+    requestId?: string,
+    responseTimesTopic = Queues.RESPONSE_TIMES,
+  ): Promise<void> {
+    if (!['staging', 'production'].includes(process.env.NODE_ENV)) return;
+    const timestamp = Math.floor(new Date().getTime());
+
+    const responseTime = {
+      url: rpcUrl,
+      blueprintId: blueprintId,
+      // TODO  i can only presume indexerId was supposed to be a unique identifier for each AP producer instance
+      indexerId: 'INDEXER-ID',
+      responseStatusCode: -1,
+      responseTimeMs: requestDuration,
+      timestamp: timestamp,
+      extras: {
+        requestId: requestId,
+        nodeEnv: process.env.NODE_ENV,
+      },
+    } as ResponseTimeQueue;
+
+    const responseTimeQueuesAsJson = this.stringifyQueues([responseTime]);
+
+    this.sendMessage(responseTimesTopic, responseTimeQueuesAsJson);
+  }
+
+  private stringifyQueues = (array: BaseQueue[]) =>
+    array.map((r) => {
+      return { value: JSON.stringify(r) };
+    });
 
   public async sendLogs(msgs: LogQueue[], topic: Queues = Queues.LOGS) {
     await this.sendMessage(
