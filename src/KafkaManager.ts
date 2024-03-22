@@ -121,7 +121,7 @@ export class KafkaManager {
       // TODO  i can only presume indexerId was supposed to be a unique identifier for each AP producer instance
       indexerId: 'INDEXER-ID',
       responseStatusCode: -1,
-      responseTimeMs: requestDuration,
+      responseTimeMs: Math.trunc(requestDuration),
       timestamp: timestamp,
       extras: {
         requestId: requestId,

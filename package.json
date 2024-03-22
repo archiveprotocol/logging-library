@@ -1,6 +1,6 @@
 {
   "name": "archive-logging-library",
-  "version": "1.0.27",
+  "version": "1.0.28",
   "description": "Library for writing logs to Archive logging instance",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
