@@ -41,10 +41,7 @@ export function buildAppender(kafkaManager: KafkaManager, topic?: Queues, bluepr
       process.stdout.write(`AP-LOGGER: ${layout(loggingEvent, timezoneOffset)}\n`);
     };
 
-    appender.shutdown = (done) => {
-      process.stdout.write('AP-LOGGER: buildAppender shutdown');
-      process.stdout.write('AP-LOGGER: ', done);
-    };
+    appender.shutdown = () => {};
     return appender;
   };
 
