@@ -1,7 +1,7 @@
 import { MyRequestConfig } from './config/axios.config';
 import { defaultKafkaConfig } from './kafkaConfig';
 import { Consumer, Kafka, KafkaConfig, Message, Producer } from 'kafkajs';
-import { BaseQueue, ExternalAPICallQueue, LogQueue, Queues, ResponseTimeQueue } from 'logging-queue-interfaces';
+import { BaseQueue, LogQueue, Queues, ResponseTimeQueue } from 'logging-queue-interfaces';
 
 export class KafkaManager {
   private static instance: KafkaManager;
@@ -69,7 +69,6 @@ export class KafkaManager {
     blueprintId: string,
     requestId?: string,
     responseTimesTopic = Queues.RESPONSE_TIMES,
-    externalApiCallsTopic = Queues.EXTERNAL_API_CALLS,
   ): Promise<void> {
     if (!['staging', 'production'].includes(process.env.NODE_ENV)) return;
 
@@ -90,20 +89,8 @@ export class KafkaManager {
       },
     } as ResponseTimeQueue;
 
-    const externalApiCall = {
-      url: config.url,
-      timestamp: responseTime.timestamp, // we send the same timestamp for easier joining (if required)
-      blueprintId: blueprintId,
-      runSessionId: 'kafka-rest-manager-run-session-id',
-      extras: {
-        requestId: requestId,
-      },
-    } as ExternalAPICallQueue;
-
     const responseTimeQueuesAsJson = this.stringifyQueues([responseTime]);
-    const externalApiCallAsJson = this.stringifyQueues([externalApiCall]);
     this.sendMessage(responseTimesTopic, responseTimeQueuesAsJson);
-    this.sendMessage(externalApiCallsTopic, externalApiCallAsJson);
   }
 
   async sendRpcResponseTimeToKafka(
