@@ -17,7 +17,7 @@ export declare class KafkaManager {
     disconnect(): Promise<void>;
     get producer(): Producer;
     get consumer(): Consumer;
-    sendResponseTimeToKafka(config: MyRequestConfig, status: number, blueprintId: string, requestId?: string, responseTimesTopic?: Queues, externalApiCallsTopic?: Queues): Promise<void>;
+    sendResponseTimeToKafka(config: MyRequestConfig, status: number, blueprintId: string, requestId?: string, responseTimesTopic?: Queues): Promise<void>;
     sendRpcResponseTimeToKafka(rpcUrl: string, requestDuration: number, requestId?: string, responseTimesTopic?: Queues): Promise<void>;
     private stringifyQueues;
     sendLogs(msgs: LogQueue[], topic?: Queues): Promise<void>;
